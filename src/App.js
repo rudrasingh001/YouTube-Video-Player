@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import VideoPlayer from './components/VideoPlayer'; // Assuming your VideoPlayer component is in a separate file
+import './App.css'; // Import the CSS file for custom styling
 
 function App() {
+  const [inputVideoId, setInputVideoId] = useState('');
+  const [currentVideoId, setCurrentVideoId] = useState('');
+
+  const handleInputChange = (event) => {
+    setInputVideoId(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    setCurrentVideoId(inputVideoId);
+    setInputVideoId(''); // Clear the input field after submission
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h1 className="app-title">Custom YouTube Video Player</h1>
+      <div className="input-container">
+        <input
+          type="text"
+          value={inputVideoId}
+          onChange={handleInputChange}
+          placeholder="Paste YouTube Video ID here"
+          className="input-field"
+        />
+        <button onClick={handleSubmit} className="submit-button">
+          Display Video
+        </button>
+      </div>
+      {currentVideoId && <VideoPlayer videoId={currentVideoId} />}
     </div>
   );
 }

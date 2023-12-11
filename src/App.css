@@ -1,3 +1,49 @@
+.app {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.app-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+  width: 300px;
+}
+
+.submit-button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #3366cc;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #2356a0;
+}
+
+/* Add more styles as needed */
+
+
+
 .App {
   text-align: center;
 }
