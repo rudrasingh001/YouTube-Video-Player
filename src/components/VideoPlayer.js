@@ -7,7 +7,7 @@ const VideoPlayer = ({ videoId }) => {
   const [error, setError] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
+  const [currentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const videoRef = useRef(null);
   const player = useRef(null);
@@ -16,8 +16,7 @@ const VideoPlayer = ({ videoId }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=AIzaSyCB3qfR0ukofjJI2WiEWTLtVW6rA_kEwVQ
-          `
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=AIzaSyCB3qfR0ukofjJI2WiEWTLtVW6rA_kEwVQ`
         );
         const videoSnippet = response.data.items[0].snippet;
         setVideoTitle(videoSnippet.title);
@@ -31,6 +30,17 @@ const VideoPlayer = ({ videoId }) => {
   }, [videoId]);
 
   useEffect(() => {
+    const initializePlayer = () => {
+      player.current = new window.YT.Player(videoRef.current, {
+        videoId: videoId,
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange,
+          onError: onPlayerError,
+        },
+      });
+    };
+
     // Load the YouTube IFrame Player API script
     const tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
@@ -42,18 +52,8 @@ const VideoPlayer = ({ videoId }) => {
     return () => {
       window.onYouTubeIframeAPIReady = null;
     };
-  }, []);
-
-  const initializePlayer = () => {
-    player.current = new window.YT.Player(videoRef.current, {
-      videoId: videoId,
-      events: {
-        onReady: onPlayerReady,
-        onStateChange: onPlayerStateChange,
-        onError: onPlayerError,
-      },
-    });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // No dependencies here if initializePlayer doesn't change over time
 
   const onPlayerReady = (event) => {
     event.target.setVolume(isMuted ? 0 : 100);
